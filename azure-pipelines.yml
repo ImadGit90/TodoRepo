@@ -1,0 +1,38 @@
+trigger: none
+pool: TodoPool
+
+stages:
+  - stage: TodoInfra
+    jobs:
+      - job: TodoDeploment
+        displayName: InfraPipeline
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        
+        - task: TerraformTask@5
+          displayName: Terraform init
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
+            backendServiceArm: 'Imdinfraconnect'
+            backendAzureRmStorageAccountName: 'arshstg123'
+            backendAzureRmContainerName: 'arshctrl123'
+            backendAzureRmKey: 'terraform.tfstate'
+
+        - task: TerraformTask@5
+          displayName: Terraform Validate
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
+     
+        - task: TerraformTask@5
+          displayName: Terraform Plan
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
+            environmentServiceNameAzureRM: 'Imdinfraconnect'
