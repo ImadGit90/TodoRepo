@@ -17,9 +17,9 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
-            backendServiceArm: 'Imdtodoinfra'
-            backendAzureRmStorageAccountName: 'arshstg'
-            backendAzureRmContainerName: 'arshcrl'
+            backendServiceArm: 'Imdinfraconnect'
+            backendAzureRmStorageAccountName: 'arshstg123'
+            backendAzureRmContainerName: 'arshctrl123'
             backendAzureRmKey: 'terraform.tfstate'
 
         - task: TerraformTask@5
@@ -30,8 +30,9 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
      
         - task: TerraformTask@5
+          displayName: Terraform Plan
           inputs:
             provider: 'azurerm'
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
-            environmentServiceNameAzureRM: 'Imdtodoinfra'
+            environmentServiceNameAzureRM: 'Imdinfraconnect'
