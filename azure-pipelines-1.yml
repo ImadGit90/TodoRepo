@@ -19,7 +19,7 @@ stages:
             backendServiceArm: 'Imdinfraconnect'
             backendAzureRmStorageAccountName: 'arshstg123'
             backendAzureRmContainerName: 'arshctrl123'
-            backendAzureRmKey: 'terraform.tfvars'
+            backendAzureRmKey: 'terraform.tfstate'
 
         - task: TerraformTask@5
           displayName: Terraform Plan
