@@ -15,7 +15,7 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/Moule'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
             backendServiceArm: 'Imdinfraconnect'
             backendAzureRmStorageAccountName: 'arshstg123'
             backendAzureRmContainerName: 'arshctrl123'
@@ -33,6 +33,9 @@ stages:
       - job: 
         displayName: Scan
         steps:
-        
+        - task: tfsec@1
+          inputs:
+            version: 'v1.26.0'
+            dir: '$(System.DefaultWorkingDirectory)/Module'
 
 
