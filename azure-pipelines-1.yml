@@ -2,7 +2,7 @@ trigger: none
 pool: TodoPool
 
 stages:
-  - stage: initialization
+  - stage: Initialization
     jobs:
       - job: 
         steps:
@@ -38,5 +38,41 @@ stages:
           inputs:
             version: 'v1.26.0'
             dir: '$(System.DefaultWorkingDirectory)/Module'
+
+  - stage: ManualApproval
+    dependsOn: Initialization
+    jobs:
+      - job: 
+        displayName: ManualApprove
+        pool: server
+        steps:
+        - task: ManualValidation@1
+          inputs:
+            notifyUsers: 'imad3290@gmail.com'
+            approvers: 'imad3290@gmail.com'
+
+  - stage: Apply
+    dependsOn: ManualApproval
+    displayName: Apply
+    jobs:
+      - job:
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
+            backendServiceArm: 'Imdinfraconnect'
+            backendAzureRmStorageAccountName: 'arshstg123'
+            backendAzureRmContainerName: 'arshctrl123'
+            backendAzureRmKey: 'terraform.tfstate'
+
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
+            environmentServiceNameAzureRM: 'Imdinfraconnect'
+
 
 
