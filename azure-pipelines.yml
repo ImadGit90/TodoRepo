@@ -36,3 +36,10 @@ stages:
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
             environmentServiceNameAzureRM: 'Imdinfraconnect'
+
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Module'
+            environmentServiceNameAzureRM: 'Imdinfraconnect'
